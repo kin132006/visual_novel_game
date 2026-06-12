@@ -2,6 +2,83 @@ require Set
 
 class Game
   #główna pętla gry
+  def initialize()
+    @file_name = ""
+    @asset_manager = AssetManager.new()
+    asset_manager.read_assets()
+    @game_state = GameState.new(asset_manager)
+  end
+
+  def start()
+
+  end
+
+  def new_game()
+    #uzupełnienie paru wartości
+
+    self.game_loop()
+  end
+
+  def continue_game()
+    DataManager.load(file_name)
+    self.game_loop()
+  end
+
+  def game_loop()
+    while true
+      self.choice()
+    end
+  end
+
+  def choice
+
+  end
+
+  def change_room(room)
+    @game_state.room = room
+    self.room_desc()
+  end
+
+  def room_desc()
+    puts "You are in #{@game_state.room}."
+    puts "Characters: #{@game_state.char_loc[room].join(", ")}."
+    puts "Items: #{@game_state.item_loc[room].join(", ")}."
+  end
+
+  def take_item(item, room)
+    @game_state.inventory << item.name
+    puts "#{item.name} added to inventory."
+    @game_state.item_loc[room.name].delete(item.name)
+  end
+
+  def talk(character)
+    dial = self.find_dial(character)
+    if !dial
+      puts "Nie masz o czym rozmawiać"
+    else
+      dialogue_manager = DialogueManager.new(game_state, dial)
+      dialogue_manager.talk
+      @game_state.time.next_round()
+    end
+  end
+
+  def find_dial(character) #character name
+    room = game_state.room #room name
+    dialogues = asset_manager.dialogues[character][room]
+    chosen = nil
+    dialogues.each do |dial|
+      if dial.is_possible(@game_state)
+        chosen = dial
+        break
+      end
+    end
+    chosen
+  end
+
+  def describe(object) #character, item, room
+    object.description()
+  end
+
 end
 
 class GameState
@@ -9,22 +86,30 @@ class GameState
   #przechowuje informacje dynamiczne
   #ekwipunek, flagi, relacje, czas, rozmieszczenie
   def initialize(assets)
-    @relations = {}
-    @item_loc = Hash.new { |hash, key| hash[key] = [] } 
-    @char_loc = Hash.new { |hash, key| hash[key] = [] } 
+    @relations = Hash.new { |hash, key| hash[key] = 0 } 
+    @item_loc = Hash.new { |hash, key| hash[key] = [] } # room:items
+    @char_loc = Hash.new { |hash, key| hash[key] = [] } # room:chars
     @flags = Set.new
     @time = Time.new
+    @room = nil
+    @inventory = []
     @Assets = assets #asset_manager
   end
 
-  def new_day()
+  def new_day() #losuje na nowo przedmioty w pokojach
 
   end
-
 end
 
 class DataManager
   #zapisuje informacje dynamiczne (GameState)
+  def self.load(file_name, game_state)
+
+  end
+
+  def self.save(file_name, game_state)
+
+  end
 end
 
 class AssetManager
@@ -35,7 +120,7 @@ class AssetManager
     @rooms = []
     @characters = []
     @dialogues = Hash.new { |hash, key| hash[key] = (Hash.new { |hash, key| hash[key] = [] })  } 
-    #słownik    {character_id: {room_id:[dialogues]}}
+    #słownik    {character_id(name): {room_id(name):[dialogues]}}
   end
 
   def read_assets()
@@ -107,6 +192,11 @@ class Character
     @name = name
     @description = desc
   end
+
+  def description()
+    puts @description
+  end
+
 end
 
 class Room
@@ -114,12 +204,20 @@ class Room
     @name = name
     @description = desc
   end
+
+  def description()
+    puts @description
+  end
 end
 
 class Item
   def initialize(name,desc)
     @name = name
     @description = desc
+  end
+
+  def description()
+    puts @description
   end
 end
 
