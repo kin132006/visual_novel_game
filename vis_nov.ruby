@@ -2,7 +2,8 @@ require Set
 
 class Game
   #główna pętla gry
-  def initialize()
+  def initialize(title)
+    @title
     @file_name = ""
     @asset_manager = AssetManager.new()
     asset_manager.read_assets()
@@ -10,7 +11,63 @@ class Game
   end
 
   def start()
+    puts "Welcome to #{@title}" 
+    while true
+      puts "Choose what you want to do:"
+      puts "1. New game"
+      puts "2. Continue game"
+      puts "3. quit"
 
+      print "> "
+      choice = gets.chomp.to_i
+
+      if choice == 1
+        puts "NEW GAME"
+        puts "Choose a name for your save file"
+        print "> "
+        @file_name = gets.chomp.strip.gsub(' ', '_')
+
+        if @file_name.empty?
+          @file_name = "save_#{Time.now.to_i}"
+        end
+
+        puts "Creating new save file as #{@file_name}.json"
+        new_game()
+        break
+
+      elsif choice == 2
+        puts "CONTINUE GAME"
+        #wybór z listy
+        Dir.mkdir("saves") unless Dir.exist?("saves")
+        saves = Dir.glob("saves/*.json").map { |path| File.basename(path, ".json") }
+        if saves.empty?
+          puts "No save files found! Start a new game."
+          next
+        end
+        puts "Choose your save file"
+        saves.each_with_index do |name, idx|
+          puts "#{idx+1}. #{name}"
+        end 
+        puts "#{saves.size+1}. Go back to main menu"
+
+        print "> "
+        save_choice = gets.chomp.to_i
+
+        if save_choice == saves.size + 1
+          next
+        elsif save_choice > 0 && save_choice <= saves.size
+          @file_name = saves[save_choice-1]
+          puts "Loading save_file: #{file_name}..."
+          continue_game()
+        else
+          puts "Invalid save file selection!"
+        end
+      elsif choice == 3 
+        exit
+      else
+        "Invalid input"
+      end
+    end
   end
 
   def new_game()
@@ -20,7 +77,7 @@ class Game
   end
 
   def continue_game()
-    DataManager.load(file_name)
+    DataManager.load(@file_name)
     self.game_loop()
   end
 
@@ -116,9 +173,10 @@ class AssetManager
   #zapisuje i wczytuje szablony
   #będzie przechowywać informacje o szablonach
   def initialize()
-    @items = []
+    @items = [] 
     @rooms = []
     @characters = []
+    @dialogues = Hash.new { |hash, key| hash[key] = nil}
     @dialogues = Hash.new { |hash, key| hash[key] = (Hash.new { |hash, key| hash[key] = [] })  } 
     #słownik    {character_id(name): {room_id(name):[dialogues]}}
   end
@@ -150,20 +208,21 @@ class DialogueManager
     poss_opts = []
     licz = 1
     dial.opts.each do |opt|
-      puts licz
+      print "#{licz}. "
       licz += 1
       opt.show()
       if opt.is_possible 
         poss_opts << opt
       else
         poss_opts << nil
-        puts "X"
+        print " X"
+        puts ""
       end
     end
-    puts "Wybierz opcje."
+    puts "Choose an option"
     choice = gets.chomp.to_i
     while choice>poss_opts.size or choice<=0 or poss_opts[choice]==nil
-      puts "Wybierz możliwą opcję"
+      print "Invalid option, choose again: "
       choice = gets.chomp.to_i
     end
     poss_opts[choice]
@@ -239,7 +298,7 @@ class Dialogue
   end
 
   def show()
-    puts @dial
+    print @dial
   end
 end
 
@@ -267,7 +326,7 @@ class Option
     end
 
   def show()
-    puts dial
+    print dial
   end
 end
 
