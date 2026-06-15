@@ -71,7 +71,8 @@ class Game
   end
 
   def new_game()
-    #uzupełnienie paru wartości
+    #uzupełnienie paru wartości w game_state
+    # trzeba uzupełnić tablice i słowniki w game_state, żeby miały podstawowe wartości
 
     self.game_loop()
   end
@@ -88,7 +89,119 @@ class Game
   end
 
   def choice
+    room = @game_state.room
+    puts "You are in #{room}."
+    puts "Choose an action"
+    puts "1. Describe the room"
+    puts "2. Describe item"
+    puts "3. Describe character"
+    puts "4. Take item"
+    puts "5. Talk with character"
+    puts "6. Go to another room"
+    puts "7. Save"
+    puts "8. Go back to menu"
+    puts "9. Exit"
 
+    choice = gets.chomp_to_i
+    case choice 
+    when 1
+      room_desc
+    when 2
+      puts "choose an item to describe"
+      items = @game_state.item_loc[room] 
+      items.each_with_index do |name, idx|
+        puts "#{idx+1}. #{name}"
+      end 
+      puts "#{items.size+1}. Go back"
+      print "> "
+      choice = gets.chomp.to_i
+      if choice == items.size + 1
+        next
+      elsif choice>0 && choice<= items.size
+        describe(@asset_manager.items[items[choice]])
+      else
+        puts "Invalid choice"
+        next
+      end
+    when 3
+      puts "choose a character to describe"
+      characters = @game_state.char_loc[room] 
+      characters.each_with_index do |name, idx|
+        puts "#{idx+1}. #{name}"
+      end 
+      puts "#{characters.size+1}. Go back"
+      print "> "
+      choice = gets.chomp.to_i
+      if choice == characters.size + 1
+        next
+      elsif choice>0 && choice<= characters.size
+        describe(@asset_manager.characters[characters[choice]])
+      else
+        puts "Invalid choice"
+        next
+      end
+    when 4
+      puts "choose an item to take"
+      items = @game_state.item_loc[room] 
+      items.each_with_index do |name, idx|
+        puts "#{idx+1}. #{name}"
+      end 
+      puts "#{items.size+1}. Go back"
+      print "> "
+      choice = gets.chomp.to_i
+      if choice == items.size + 1
+        next
+      elsif choice>0 && choice<= items.size
+        take_item(items[choice], room)
+      else
+        puts "Invalid choice"
+        next
+      end
+    when 5
+      puts "choose a character to talk to"
+      characters = @game_state.char_loc[room] 
+      characters.each_with_index do |name, idx|
+        puts "#{idx+1}. #{name}"
+      end 
+      puts "#{characters.size+1}. Go back"
+      print "> "
+      choice = gets.chomp.to_i
+      if choice == characters.size + 1
+        next
+      elsif choice>0 && choice<= characters.size
+        talk(characters[choice])
+      else
+        puts "Invalid choice"
+        next
+      end
+    when 6
+      puts "choose a room to go to"
+      rooms = @asset_manager.rooms.keys
+      rooms.each_with_index do |name, idx|  
+        puts "#{idx+1}. #{name}"
+      end 
+      puts "#{room.keys.size+1}. Go back"
+      print "> "
+      choice = gets.chomp.to_i
+      if choice == rooms.size + 1
+        next
+      elsif choice>0 && choice<= rooms.size
+        talk(rooms[choice])
+      else
+        puts "Invalid choice"
+        next
+      end
+    when 7
+      DataManager.save(@file_name, @game_state)
+      puts "Saved progress to #{@file_name}"
+    when 8 
+      start()
+      break
+    when 9
+      exit
+    else
+      puts "Invalid choice"
+    end
   end
 
   def change_room(room)
@@ -102,14 +215,14 @@ class Game
     puts "Items: #{@game_state.item_loc[room].join(", ")}."
   end
 
-  def take_item(item, room)
-    @game_state.inventory << item.name
-    puts "#{item.name} added to inventory."
-    @game_state.item_loc[room.name].delete(item.name)
+  def take_item(item, room) #item_id, room_id
+    @game_state.inventory << item
+    puts "#{item} added to inventory."
+    @game_state.item_loc[room].delete(item)
   end
 
   def talk(character)
-    dial = self.find_dial(character)
+    dial = self.find_dial(character) #character name
     if !dial
       puts "Nie masz o czym rozmawiać"
     else
@@ -147,9 +260,9 @@ class GameState
     @item_loc = Hash.new { |hash, key| hash[key] = [] } # room:items
     @char_loc = Hash.new { |hash, key| hash[key] = [] } # room:chars
     @flags = Set.new
-    @time = Time.new
-    @room = nil
-    @inventory = []
+    @time = Time.new(1, 1)
+    @room = nil     #id pokoju
+    @inventory = []   #tablica id itemów
     @Assets = assets #asset_manager
   end
 
@@ -173,10 +286,10 @@ class AssetManager
   #zapisuje i wczytuje szablony
   #będzie przechowywać informacje o szablonach
   def initialize()
-    @items = [] 
-    @rooms = []
-    @characters = []
-    @dialogues = Hash.new { |hash, key| hash[key] = nil}
+    @items = {}
+    @rooms = {}
+    @characters = {}
+    @dial = Hash.new { |hash, key| hash[key] = nil}
     @dialogues = Hash.new { |hash, key| hash[key] = (Hash.new { |hash, key| hash[key] = [] })  } 
     #słownik    {character_id(name): {room_id(name):[dialogues]}}
   end
@@ -247,6 +360,7 @@ class Time
 end
 
 class Character
+  attr_reader :name, :description
   def initialize(name,desc)
     @name = name
     @description = desc
@@ -259,6 +373,7 @@ class Character
 end
 
 class Room
+  attr_reader :name, :description
   def initialize(name,desc)
     @name = name
     @description = desc
@@ -270,6 +385,7 @@ class Room
 end
 
 class Item
+  attr_reader :name, :description
   def initialize(name,desc)
     @name = name
     @description = desc
@@ -340,7 +456,7 @@ class Effect
   end
 end
 
-class Requirements
+class Requirement
   def initialize()
     raise "NotImplemented"
   end
