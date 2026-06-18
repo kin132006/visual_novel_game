@@ -6,11 +6,12 @@ class Game
   #główna pętla gry
   def initialize(title)
     @title
+    @base_path = "games/#{title}"
     @file_name = ""
-    @asset_manager = AssetManager.new()
+    @asset_manager = AssetManager.new(base_path)
     asset_manager.read_assets()
     @game_state = GameState.new(asset_manager)
-    @base_path = "games/#{title}"
+    
   end
 
   def start()
