@@ -22,6 +22,7 @@ class AssetManager
     @effects = {}
     @options = {}
     
+    @dial_id = {}
     @dialogues = Hash.new { |hash, key| hash[key] = (Hash.new { |hash, key| hash[key] = [] })  } 
     #słownik    {character_id(name): {room_id(name):[dialogues]}}
   end
@@ -93,15 +94,55 @@ class AssetManager
   end
 
   def read_opts()
-    #TO DO
+    opts_file = "#{@base_path}/assets/options.yaml"
+    if File.exist?(opts_file)
+      raw_data = YAML.load_file(opts_file)
+      raw_data.each do |data|
+        reqs_l = []
+        (data['reqs'] || []).each do |req|
+          reqs_l << @reqs[req]
+        end
+        effects_l = []
+        (data['effects'] || []).each do |eff|
+          effects_l << @effects[eff]
+        end
+        @options[data['id']] = Option.new(data['id'],data['text'],reqs_l,effects_l,data['next_dial'])
+      end      
+    end  
   end
 
   def read_dialogues()
-    #TO DO
+    dial_file = "#{@base_path}/assets/dialogues.yaml"
+    if File.exist?(dial_file)
+      raw_data = YAML.load_file(dial_file)
+      raw_data.each do |data|
+        reqs_l = []
+        (data['reqs'] || []).each do |req|
+          reqs_l << @reqs[req]
+        end
+        opts = []
+        data['options'].each do |opt|
+          opts << @options[opt]
+        end
+        @dial_id[data['id']] = Dialogue.new(data['id'],data['character'],data['text'],reqs_l,opts)
+      end      
+    end  
   end
 
   def link_everything()
-    #TO DO
+    @options.values.each do |opt|
+      if opt.next_dial
+        opt.next_dial = @dial_id[opt.next_dial]
+      end
+    end
+
+    @dial_id.values.each do |dial|
+      dial.reqs.each do |req|
+        if req.is_a?(LocationRequirement)
+          dialogues[dial.char][req.room_id] << dial
+        end
+      end
+    end
   end
 
   def create_req(data)

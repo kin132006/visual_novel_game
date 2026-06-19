@@ -239,6 +239,7 @@ class Game
   def find_dial(character) #character name
     room = game_state.room #room name
     dialogues = asset_manager.dialogues[character][room]
+    dialogues << asset_manager.dialogues[character]['any']
     chosen = nil
     dialogues.each do |dial|
       if dial.is_possible(@game_state)

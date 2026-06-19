@@ -1,7 +1,8 @@
 
 class Dialogue
-  def initialize(id, dial, reqs, opts)
+  def initialize(id, char, dial, reqs, opts)
     @id = id
+    @char = char
     @dial = dial #kwestia dialogowa
     @reqs = reqs #lista wymagań
     @opts = opts #lista opcji
