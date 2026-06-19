@@ -1,6 +1,7 @@
 require_relative 'game_state'
 require_relative 'asset_manager'
 require_relative 'data_manager'
+require_relative 'dialogue_manager'
 
 class Game
   #główna pętla gry
@@ -209,6 +210,7 @@ class Game
 
   def change_room(room)
     @game_state.room = room
+    @game_state.time.next_round(@game_state)
     self.room_desc()
   end
 
@@ -228,7 +230,7 @@ class Game
   end
 
   def talk(character)
-    dial = self.find_dial(character) #character name
+    dial = find_dial(character) #character name
     if !dial
       puts "You don't have anything to talk about"
     else

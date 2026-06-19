@@ -19,25 +19,26 @@ class DialogueManager
   def choose_opt(dial)
     poss_opts = []
     licz = 1
+    puts ""
     dial.opts.each do |opt|
       print "#{licz}. "
       licz += 1
       opt.show()
-      if opt.is_possible 
+      if opt.is_possible?(@game_state) 
         poss_opts << opt
       else
         poss_opts << nil
         print " X"
-        puts ""
       end
+      puts ""
     end
     puts "Choose an option"
     choice = gets.chomp.to_i
-    while choice>poss_opts.size or choice<=0 or poss_opts[choice]==nil
+    while choice>poss_opts.size or choice<=0 or poss_opts[choice-1]==nil
       print "Invalid option, choose again: "
       choice = gets.chomp.to_i
     end
-    poss_opts[choice]
+    poss_opts[choice-1]
   end
 
 end

@@ -1,12 +1,12 @@
 - id: "eff_plus_relation_val"
   type: "relation"
   char_id: "Valentino"
-  val: 5
+  value: 5
 
 - id: "eff_minus_relation_val"
   type: "relation"
   char_id: "Valentino"
-  val: -5
+  value: -5
 
 - id: "eff_remove_donut"
   type: "remove_item" 

@@ -53,10 +53,10 @@ class Relation < Effect
   def apply(game_state)
     game_state.relations[@char] += @val
     value = ''
-    if val<0
-      value = "#{val}"
+    if @val<0
+      value = "#{@val}"
     else
-      value = "+#{val}"
+      value = "+#{@val}"
     end
     puts "Relathionship with #{@char}: #{value}"
   end
