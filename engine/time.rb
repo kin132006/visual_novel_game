@@ -10,6 +10,7 @@ class Time
     @round += 1
     if(@round==@max_round)
       @day+=1
+      @round = 1
       game_state.new_day()
     end
   end  

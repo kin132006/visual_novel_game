@@ -35,15 +35,17 @@ class Game
           @file_name = "save_#{Time.now.to_i}"
         end
 
-        puts "Creating new save file as #{@file_name}.json"
+        puts "Creating new save file at #{@file_name}.json"
+
+        @file_name = "#{@base_path}/saves/#{file_name}"
         new_game()
         break
 
       elsif choice == 2
         puts "CONTINUE GAME"
         #wybór z listy
-        Dir.mkdir("saves") unless Dir.exist?("saves")
-        saves = Dir.glob("saves/*.json").map { |path| File.basename(path, ".json") }
+        Dir.mkdir("#{@base_path}/saves") unless Dir.exist?("saves")
+        saves = Dir.glob("#{@base_path}/saves/*.yaml").map { |path| File.basename(path, ".yaml") }
         if saves.empty?
           puts "No save files found! Start a new game."
           next
@@ -61,7 +63,7 @@ class Game
           next
         elsif save_choice > 0 && save_choice <= saves.size
           @file_name = saves[save_choice-1]
-          puts "Loading save_file: #{file_name}..."
+          puts "Loading save_file: #{@file_name}..."
           continue_game()
         else
           puts "Invalid save file selection!"
@@ -75,10 +77,10 @@ class Game
   end
 
   def new_game()
-    #uzupełnienie paru wartości w game_state
-    # trzeba uzupełnić tablice i słowniki w game_state, żeby miały podstawowe wartości
-
-    self.game_loop()
+    @game_state.set_default()
+    @game_state.set_positions()
+    DataManager.save(@file_name, @game_state)
+    game_loop()
   end
 
   def continue_game()
