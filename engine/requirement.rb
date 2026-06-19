@@ -28,3 +28,24 @@ class  MinRelationRequirement < Requirement
   def fullfilled?(game_state)
     game_state.relations[@char] >= @val
   end
+end
+
+class  FlagRequirement < Requirement
+  def initialize(flag)
+    @flag = flag
+  end
+
+  def fullfilled?(game_state)
+    game_state.flags.include?(@flag)
+  end
+end
+
+class  HasItemRequirement < Requirement
+  def initialize(item)
+    @item = item
+  end
+
+  def fullfilled?(game_state)
+    game_state.inventory.include?(@item)
+  end
+end

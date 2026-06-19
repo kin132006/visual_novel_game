@@ -1,0 +1,20 @@
+- id: "req_w_biurze"
+  type: "location"
+  loc_id: "Office"
+
+- id: "req_w_ogrodzie"
+  type: "location"
+  loc_id: "Garden"
+
+- id: "req_ma_donuta"
+  type: "has_item"   
+  item_id: "donut"
+
+- id: "req_lubi_valentino"
+  type: "min_relation"
+  char_id: "Valentino"
+  val: 5
+
+- id: "req_zjadl_paczka"
+  type: "flag"
+  flag: "valentino_zjadl_donuta"

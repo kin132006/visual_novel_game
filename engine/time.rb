@@ -1,5 +1,5 @@
 
-class Time
+class TimeSystem
   attr_accessor :day, :round
   def initialize(day, round)
     @day = day

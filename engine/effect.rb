@@ -15,8 +15,28 @@ class AddItem < Effect
   end
 
   def apply(game_state)
-    game_state.inventory << item_id
+    game_state.inventory << @item_id
     puts "Added #{@item_id} to inventory"
+  end
+end
+
+class AddFlag < Effect
+  def initialize(flag_id)
+    @flag = flag_id
+  end
+
+  def apply(game_state)
+    game_state.flags << @flag
+  end
+end
+
+class RemoveItem < Effect
+  def initialize(item_id)
+    @item_id = item_id
+  end
+
+  def apply(game_state)
+    game_state.inventory.delete(@item_id)
   end
 end
 
@@ -27,7 +47,7 @@ class Relation < Effect
   end
 
   def apply(game_state)
-    game_state.relations[char] += val
+    game_state.relations[@char] += @val
     value = ''
     if val<0
       value = "#{val}"

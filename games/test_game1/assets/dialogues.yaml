@@ -1,0 +1,55 @@
+- id: "dial_val_office_start"
+  character: "Valentino"
+  room_id: "Office"
+  text: "Oh, hey there! Valentino looks up from a massive stack of papers. Working hard, or just looking for an excuse to grab a cup of coffee?"
+  reqs:
+    - "req_in_office"
+  options:
+    - "opt_val_office_donut"
+    - "opt_val_office_eat_it"
+    - "opt_val_office_no_donut"
+
+- id: "dial_val_office_thanks"
+  character: "Valentino"
+  text: "No way! My absolute favorite! Thank you so much, you genuinely saved my sugar levels on this dreadful Monday."
+  reqs: []
+  options:
+    - "opt_end_dialogue_office" 
+
+- id: "dial_val_office_sad"
+  character: "Valentino"
+  text: "Valentino stares at you with absolute disbelief and a flicker of deep betrayal in his eyes. Wow... That was surprisingly ruthless."
+  reqs: []
+  options:
+    - "opt_end_dialogue_office" 
+
+- id: "dial_val_office_bye"
+  character: "Valentino"
+  text: "Haha, no worries! The paperwork keeps me busy enough anyway. Catch you later!"
+  reqs: []
+  options:
+    - "opt_end_dialogue_office" 
+
+- id: "dial_val_garden_start"
+  character: "Valentino"
+  room_id: "Garden"
+  text: "Beautiful weather for a stroll, isn't it? The office air conditioning was driving me crazy."
+  reqs:
+    - "req_in_garden"
+  options:
+    - "opt_val_garden_secret"
+    - "opt_val_garden_wave"
+
+- id: "dial_val_garden_secret_reveal"
+  character: "Valentino"
+  text: "Sigh... Promise you won't tell anyone? I buy those donuts because whenever the boss eats one, he falls asleep, and I can play RTS games on my computer. Works like a charm."
+  reqs: []
+  options:
+    - "opt_end_dialogue_garden" 
+
+- id: "dial_val_garden_bye"
+  character: "Valentino"
+  text: "See you around! Don't let the boss catch you slacking!"
+  reqs: []
+  options:
+    - "opt_end_dialogue_garden" 

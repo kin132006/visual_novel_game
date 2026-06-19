@@ -151,6 +151,10 @@ class AssetManager
       LocationRequirement.new(data['room_id'])
     when "min_relation"
       MinRelationRequirement.new(data["char_id"], data["value"])
+    when "flag"
+      FlagRequirement.new(data["flag"])
+    when "has_item"
+      HasItemRequirement.new(data["item"])
     else
       raise "Nieznany typ wymagania: #{data["type"]}"
     end
@@ -162,6 +166,10 @@ class AssetManager
       Relation.new(data['char_id'], data['value'])
     when "add_item"
       AddItem.new(data["item_id"])
+    when "add_flag"
+      AddFlag.new(data["flag"])
+    when "remove_item"
+      RemoveItem.new(data["item_id"])
     else
       raise "Nieznany typ wymagania: #{data["type"]}"
     end

@@ -1,0 +1,48 @@
+- id: "opt_val_office_donut"
+  text: "Offer him the Donut you found."
+  reqs:
+    - "req_has_donut"
+  effects:
+    - "eff_remove_donut"
+    - "eff_plus_relation_val"
+    - "eff_set_flag_eaten"
+  next_dial: "dial_val_office_thanks"
+
+- id: "opt_val_office_eat_it"
+  text: "Eat the Donut right in front of him."
+  reqs:
+    - "req_has_donut"
+  effects:
+    - "eff_minus_relation_val"
+  next_dial: "dial_val_office_sad"
+
+- id: "opt_val_office_no_donut"
+  text: "Apologize for not having any sweets today."
+  reqs: []
+  effects: []
+  next_dial: "dial_val_office_bye"
+
+- id: "opt_val_garden_secret"
+  text: "Ask him why he always buys donuts for the office."
+  reqs:
+    - "req_likes_valentino"
+  effects: []
+  next_dial: "dial_val_garden_secret_reveal"
+
+- id: "opt_val_garden_wave"
+  text: "Just wave at him and walk past."
+  reqs: []
+  effects: []
+  next_dial: "dial_val_garden_bye"
+
+- id: "opt_end_dialogue_office"
+  text: "(End the dialogue)"
+  reqs: []
+  effects: []
+  next_dial: null
+
+- id: "opt_end_dialogue_garden"
+  text: "(End the dialogue)"
+  reqs: []
+  effects: []
+  next_dial: null

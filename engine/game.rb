@@ -122,12 +122,11 @@ class Game
       print "> "
       choice = gets.chomp.to_i
       if choice == items.size + 1
-        next
+        puts "going back"
       elsif choice>0 && choice<= items.size
         describe(@asset_manager.items[items[choice]])
       else
         puts "Invalid choice"
-        next
       end
     when 3
       puts "choose a character to describe"
@@ -139,12 +138,11 @@ class Game
       print "> "
       choice = gets.chomp.to_i
       if choice == characters.size + 1
-        next
+        puts "going back"
       elsif choice>0 && choice<= characters.size
         describe(@asset_manager.characters[characters[choice]])
       else
         puts "Invalid choice"
-        next
       end
     when 4
       puts "choose an item to take"
@@ -156,12 +154,11 @@ class Game
       print "> "
       choice = gets.chomp.to_i
       if choice == items.size + 1
-        next
+        puts "going back"
       elsif choice>0 && choice<= items.size
         take_item(items[choice], room)
       else
         puts "Invalid choice"
-        next
       end
     when 5
       puts "choose a character to talk to"
@@ -173,12 +170,11 @@ class Game
       print "> "
       choice = gets.chomp.to_i
       if choice == characters.size + 1
-        next
+        puts "going back"
       elsif choice>0 && choice<= characters.size
         talk(characters[choice])
       else
         puts "Invalid choice"
-        next
       end
     when 6
       puts "choose a room to go to"
@@ -190,19 +186,17 @@ class Game
       print "> "
       choice = gets.chomp.to_i
       if choice == rooms.size + 1
-        next
+        puts "going back"
       elsif choice>0 && choice<= rooms.size
         talk(rooms[choice])
       else
         puts "Invalid choice"
-        next
       end
     when 7
       DataManager.save(@file_name, @game_state)
       puts "Saved progress to #{@file_name}"
     when 8 
       start()
-      break
     when 9
       exit
     else

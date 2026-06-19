@@ -1,0 +1,17 @@
+- id: "eff_plus_rel_valentino"
+  type: "relation"
+  char_id: "Valentino"
+  val: 5
+
+- id: "eff_minus_rel_valentino"
+  type: "relation"
+  char_id: "Valentino"
+  val: -5
+
+- id: "eff_oddaj_donuta"
+  type: "remove_item" 
+  item_id: "donut"
+
+- id: "eff_ustaw_flage_paczka"
+  type: "add_flag"
+  flag_id: "valentino_zjadl_donuta"
