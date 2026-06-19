@@ -1,0 +1,18 @@
+---
+relations:
+  Valentino: 0
+item_loc:
+  Garden: []
+  Office:
+  - donut
+  - flowers
+char_loc:
+  Garden: []
+  Office:
+  - Valentino
+flags: []
+time:
+  day: 1
+  round: 1
+room: Garden
+inventory: []

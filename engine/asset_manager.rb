@@ -148,13 +148,13 @@ class AssetManager
   def create_req(data)
     case data["type"]
     when "location"
-      LocationRequirement.new(data['room_id'])
+      LocationRequirement.new(data['loc_id'])
     when "min_relation"
-      MinRelationRequirement.new(data["char_id"], data["value"])
+      MinRelationRequirement.new(data["char_id"], data["val"])
     when "flag"
       FlagRequirement.new(data["flag"])
     when "has_item"
-      HasItemRequirement.new(data["item"])
+      HasItemRequirement.new(data["item_id"])
     else
       raise "Nieznany typ wymagania: #{data["type"]}"
     end

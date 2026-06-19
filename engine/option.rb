@@ -1,5 +1,6 @@
 
 class Option
+  attr_accessor :id, :dial, :reqs, :effs, :next_dial
   def initialize(id, dial, reqs, effs, next_dial)
     @id = id
     @dial = dial
@@ -21,6 +22,7 @@ class Option
     @effs.each do |eff|
       eff.apply(game_state)
     end
+  end
 
   def show()
     print dial

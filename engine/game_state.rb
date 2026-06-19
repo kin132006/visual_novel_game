@@ -1,9 +1,9 @@
 
-require Set
+require 'set'
 require_relative 'time'
 
 class GameState
-  attr_accessor 
+  attr_accessor :relations, :item_loc, :char_loc, :flags, :time, :room, :inventory, :Assets
   #przechowuje informacje dynamiczne
   #ekwipunek, flagi, relacje, czas, rozmieszczenie
   def initialize(assets)
@@ -11,7 +11,7 @@ class GameState
     @item_loc = Hash.new { |hash, key| hash[key] = [] } # room:items
     @char_loc = Hash.new { |hash, key| hash[key] = [] } # room:chars
     @flags = Set.new
-    @time = Time.new(1, 1)
+    @time = TimeSystem.new(1, 1)
     @room = nil     #id pokoju
     @inventory = []   #tablica id itemów
     @Assets = assets #asset_manager
@@ -25,7 +25,7 @@ class GameState
       @item_loc[room] = []
       @char_loc[room] = []
     end
-    @room = Assets.rooms.keys.first
+    @room = @Assets.rooms.keys.first
     @inventory = []
     @flags = Set.new
   end
@@ -42,13 +42,13 @@ class GameState
     end
     
     @Assets.characters.keys.each do |char|
-      @random_room = all_rooms.sample
+      random_room = all_rooms.sample
       @char_loc[random_room] << char
     end
 
     @Assets.items.keys.each do |item|
-      unless @inventory.include?(item_id)
-        @random_room = all_rooms.sample
+      unless @inventory.include?(item)
+        random_room = all_rooms.sample
         @item_loc[random_room] << item
       end
     end

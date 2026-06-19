@@ -10,6 +10,7 @@ class Effect
 end
 
 class AddItem < Effect
+  attr_accessor :item_id
   def initialize(item_id)
     @item_id = item_id
   end
@@ -21,6 +22,7 @@ class AddItem < Effect
 end
 
 class AddFlag < Effect
+  attr_accessor :flag
   def initialize(flag_id)
     @flag = flag_id
   end
@@ -31,6 +33,7 @@ class AddFlag < Effect
 end
 
 class RemoveItem < Effect
+  attr_accessor :item_id
   def initialize(item_id)
     @item_id = item_id
   end
@@ -41,6 +44,7 @@ class RemoveItem < Effect
 end
 
 class Relation < Effect
+  attr_accessor :char, :val
   def initialize(char_id, val)
     @char = char_id
     @val = val

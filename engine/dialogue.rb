@@ -1,5 +1,6 @@
 
 class Dialogue
+  attr_accessor :id, :char, :dial, :reqs, :opts
   def initialize(id, char, dial, reqs, opts)
     @id = id
     @char = char

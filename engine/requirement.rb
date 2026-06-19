@@ -10,6 +10,7 @@ class Requirement
 end
 
 class LocationRequirement < Requirement
+  attr_reader :room_id
   def initialize(loc_id)
     @room_id = loc_id
   end
@@ -20,6 +21,7 @@ class LocationRequirement < Requirement
 end
 
 class  MinRelationRequirement < Requirement
+  attr_reader :char, :val
   def initialize(char_id, val)
     @char = char_id
     @val = val
@@ -31,6 +33,7 @@ class  MinRelationRequirement < Requirement
 end
 
 class  FlagRequirement < Requirement
+  attr_reader :flag
   def initialize(flag)
     @flag = flag
   end
@@ -41,6 +44,7 @@ class  FlagRequirement < Requirement
 end
 
 class  HasItemRequirement < Requirement
+  attr_reader :item
   def initialize(item)
     @item = item
   end

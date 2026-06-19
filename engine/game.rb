@@ -5,12 +5,12 @@ require_relative 'data_manager'
 class Game
   #główna pętla gry
   def initialize(title)
-    @title
-    @base_path = "games/#{title}"
+    @title = title
+    @base_path = File.expand_path("../../games/#{@title}", __FILE__)
     @file_name = ""
-    @asset_manager = AssetManager.new(base_path)
-    asset_manager.read_assets()
-    @game_state = GameState.new(asset_manager)
+    @asset_manager = AssetManager.new(@base_path)
+    @asset_manager.read_assets()
+    @game_state = GameState.new(@asset_manager)
     
   end
 
@@ -32,20 +32,22 @@ class Game
         @file_name = gets.chomp.strip.gsub(' ', '_')
 
         if @file_name.empty?
-          @file_name = "save_#{Time.now.to_i}"
+          @file_name = "save_#{::Time.now.to_i}"
         end
+        
+        saves_dir = "#{@base_path}/saves"
+        Dir.mkdir(saves_dir) unless Dir.exist?(saves_dir)
 
-        puts "Creating new save file at #{@file_name}.json"
-
-        @file_name = "#{@base_path}/saves/#{file_name}"
+        @file_name = "#{saves_dir}/#{@file_name}.yaml"
+        puts "Creating new save file at #{@file_name}.yaml"
         new_game()
         break
 
       elsif choice == 2
         puts "CONTINUE GAME"
-        #wybór z listy
-        Dir.mkdir("#{@base_path}/saves") unless Dir.exist?("saves")
-        saves = Dir.glob("#{@base_path}/saves/*.yaml").map { |path| File.basename(path, ".yaml") }
+        saves_dir = "#{@base_path}/saves"
+        Dir.mkdir(saves_dir) unless Dir.exist?(saves_dir)
+        saves = Dir.glob("#{saves_dir}/*.yaml").map { |path| File.basename(path, ".yaml") }
         if saves.empty?
           puts "No save files found! Start a new game."
           next
@@ -62,9 +64,10 @@ class Game
         if save_choice == saves.size + 1
           next
         elsif save_choice > 0 && save_choice <= saves.size
-          @file_name = saves[save_choice-1]
+          @file_name = "#{saves_dir}/#{saves[save_choice-1]}.yaml"
           puts "Loading save_file: #{@file_name}..."
           continue_game()
+          break
         else
           puts "Invalid save file selection!"
         end
@@ -84,13 +87,13 @@ class Game
   end
 
   def continue_game()
-    DataManager.load(@file_name)
+    DataManager.load(@file_name, @game_state)
     self.game_loop()
   end
 
   def game_loop()
     while true
-      self.choice()
+      choice()
     end
   end
 
@@ -108,7 +111,7 @@ class Game
     puts "8. Go back to menu"
     puts "9. Exit"
 
-    choice = gets.chomp_to_i
+    choice = gets.chomp.to_i
     case choice 
     when 1
       room_desc
@@ -124,7 +127,7 @@ class Game
       if choice == items.size + 1
         puts "going back"
       elsif choice>0 && choice<= items.size
-        describe(@asset_manager.items[items[choice]])
+        describe(@asset_manager.items[items[choice-1]])
       else
         puts "Invalid choice"
       end
@@ -140,7 +143,7 @@ class Game
       if choice == characters.size + 1
         puts "going back"
       elsif choice>0 && choice<= characters.size
-        describe(@asset_manager.characters[characters[choice]])
+        describe(@asset_manager.characters[characters[choice-1]])
       else
         puts "Invalid choice"
       end
@@ -156,7 +159,7 @@ class Game
       if choice == items.size + 1
         puts "going back"
       elsif choice>0 && choice<= items.size
-        take_item(items[choice], room)
+        take_item(items[choice-1], room)
       else
         puts "Invalid choice"
       end
@@ -172,7 +175,7 @@ class Game
       if choice == characters.size + 1
         puts "going back"
       elsif choice>0 && choice<= characters.size
-        talk(characters[choice])
+        talk(characters[choice-1])
       else
         puts "Invalid choice"
       end
@@ -182,13 +185,13 @@ class Game
       rooms.each_with_index do |name, idx|  
         puts "#{idx+1}. #{name}"
       end 
-      puts "#{room.keys.size+1}. Go back"
+      puts "#{rooms.size+1}. Go back"
       print "> "
       choice = gets.chomp.to_i
       if choice == rooms.size + 1
         puts "going back"
       elsif choice>0 && choice<= rooms.size
-        talk(rooms[choice])
+        change_room(rooms[choice-1])
       else
         puts "Invalid choice"
       end
@@ -210,8 +213,9 @@ class Game
   end
 
   def room_desc()
-    puts "You are in #{@game_state.room}."
-    room_o = @asset_manager.rooms[@game_state.room]
+    room = @game_state.room
+    puts "You are in #{room}."
+    room_o = @asset_manager.rooms[room]
     room_o.description
     puts "Characters: #{@game_state.char_loc[room].join(", ")}."
     puts "Items: #{@game_state.item_loc[room].join(", ")}."
@@ -226,21 +230,25 @@ class Game
   def talk(character)
     dial = self.find_dial(character) #character name
     if !dial
-      puts "Nie masz o czym rozmawiać"
+      puts "You don't have anything to talk about"
     else
-      dialogue_manager = DialogueManager.new(game_state, dial)
+      dialogue_manager = DialogueManager.new(@game_state, dial)
       dialogue_manager.talk
-      @game_state.time.next_round()
+      @game_state.time.next_round(@game_state)
     end
   end
 
   def find_dial(character) #character name
-    room = game_state.room #room name
-    dialogues = asset_manager.dialogues[character][room]
-    dialogues << asset_manager.dialogues[character]['any']
+    return nil unless @asset_manager.dialogues[character]
+
+    room = @game_state.room #room name
+    dialogues = (@asset_manager.dialogues[character][room] || []).dup
+    if @asset_manager.dialogues[character]['any']
+      dialogues.concat(@asset_manager.dialogues[character]['any'])
+    end
     chosen = nil
     dialogues.each do |dial|
-      if dial.is_possible(@game_state)
+      if dial.is_possible?(@game_state)
         chosen = dial
         break
       end
