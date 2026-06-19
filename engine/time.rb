@@ -1,5 +1,6 @@
 
 class Time
+  attr_accessor :day, :round
   def initialize(day, round)
     @day = day
     @round = round

@@ -217,6 +217,8 @@ class Game
 
   def room_desc()
     puts "You are in #{@game_state.room}."
+    room_o = @asset_manager.rooms[@game_state.room]
+    room_o.description
     puts "Characters: #{@game_state.char_loc[room].join(", ")}."
     puts "Items: #{@game_state.item_loc[room].join(", ")}."
   end
