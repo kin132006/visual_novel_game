@@ -45,7 +45,7 @@ class AssetManager
 
       raw_items = YAML.load_file(items_file)  
       raw_items.each do |data|
-        @items[data['id']] = Item.new(data["name"], data["description"])
+        @items[data['name']] = Item.new(data["name"], data["description"])
       end
     end
   end
@@ -56,7 +56,7 @@ class AssetManager
 
       raw_items = YAML.load_file(rooms_file)  
       raw_items.each do |data|
-        @rooms[data['id']] = Room.new(data["name"], data["description"])
+        @rooms[data['name']] = Room.new(data["name"], data["description"])
       end
     end
   end
@@ -67,7 +67,7 @@ class AssetManager
 
       raw_items = YAML.load_file(characters_file)  
       raw_items.each do |data|
-        @characters[data['id']] = Character.new(data["name"], data["description"])
+        @characters[data['name']] = Character.new(data["name"], data["description"])
       end
 
     end

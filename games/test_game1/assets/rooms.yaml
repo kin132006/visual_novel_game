@@ -1,6 +1,4 @@
-- id: "Garden"
-  name: "Garden"
+- name: "Garden"
   description: "A green place to rest"
-- id: "Office"
-  name: "Office"
+- name: "Office"
   description: "A place for work"

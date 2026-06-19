@@ -1,6 +1,4 @@
-- id: "donut"
-  name: "Donut"
+- name: "Donut"
   description: "delicious treat"
-- id: "flowers"
-  name: "Bouqet of flowers"
+- name: "Bouqet of flowers"
   description: "bouqet made from delicate blue flowers"
