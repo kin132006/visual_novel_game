@@ -16,7 +16,6 @@ Silnik został zaprojektowany z podziałem na warstwę danych (Model), zarządza
 
 ## Diagram Klas
 
-*Tutaj możesz osadzić swój diagram klas z pliku projektu:*
 ![Diagram Klas](diagram.jpg)
 
 ---
