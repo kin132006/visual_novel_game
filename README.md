@@ -136,7 +136,7 @@ title = "your_game_title"
 
 Wykonaj poniższe polecenie w katalogu głównym projektu, aby uruchomić grę:
 
-ruby visual_novel_game/main.rb
+ruby main.rb
 
 ## System zapisu gier
 Zapisy tworzone są automatycznie wewnątrz podkatalogu gry: games/<tytuł_gry>/saves/*.yaml. Silnik samodzielnie weryfikuje istnienie folderów i tworzy je w razie potrzeby.
