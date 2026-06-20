@@ -16,7 +16,7 @@ class LocationRequirement < Requirement
   end
 
   def fullfilled?(game_state)
-    game_state.room == @room_id
+    @room_id == "any" || game_state.room == @room_id
   end
 end
 

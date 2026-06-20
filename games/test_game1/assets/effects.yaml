@@ -10,8 +10,26 @@
 
 - id: "eff_remove_donut"
   type: "remove_item" 
-  item_id: "donut"
+  item_id: "Donut"
 
 - id: "eff_set_flag_eaten"
   type: "add_flag"
   flag_id: "valentino_zjadl_donuta"
+
+- id: "eff_val_happy"
+  type: "relation"
+  char_id: "Valentino"
+  value: 3
+
+- id: "eff_val_annoyed"
+  type: "relation"
+  char_id: "Valentino"
+  value: -2
+
+- id: "eff_remove_coin"
+  type: "remove_item"
+  item_id: "lucky coin"
+
+- id: "eff_get_candy"
+  type: "add_item"
+  item_id: "mint candy"

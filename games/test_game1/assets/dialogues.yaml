@@ -53,3 +53,27 @@
   reqs: []
   options:
     - "opt_end_dialogue_garden" 
+
+- id: "dial_val_any_chat"
+  character: "Valentino"
+  text: "Hey! Funny running into you here. You look like you have a lot on your mind."
+  reqs: ["req_in_anywhere"]
+  options: ["opt_any_complain", "opt_any_ask_day"]
+
+- id: "dial_val_any_coin_check"
+  character: "Valentino"
+  text: "Wait, is that a vintage lucky coin in your hand? I've been looking for one of those for ages!"
+  reqs: ["req_in_anywhere", "req_has_coin"]
+  options: ["opt_any_give_coin", "opt_any_keep_coin"]
+
+- id: "dial_val_any_coin_success"
+  character: "Valentino"
+  text: "Wow, thank you so much! You have no idea how much this means to me. You're a true friend!"
+  reqs: []
+  options: ["opt_end_dialogue"]
+
+- id: "dial_val_any_friendly"
+  character: "Valentino"
+  text: "Ah, it's always good to see you. You know, I found this extra mint candy in my pocket. Want it?"
+  reqs: ["req_in_anywhere", "req_is_friendly_valentino"]
+  options: ["opt_any_accept_candy"]

@@ -1,4 +1,11 @@
 - name: "Donut"
   description: "delicious treat"
+
 - name: "Bouqet of flowers"
   description: "bouqet made from delicate blue flowers"
+
+- name: "lucky coin"
+  description: "It brings you luck"
+
+- name: "mint candy"
+  description: "Refreshing blue candy"

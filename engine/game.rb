@@ -248,6 +248,7 @@ class Game
     if @asset_manager.dialogues[character]['any']
       dialogues.concat(@asset_manager.dialogues[character]['any'])
     end
+    dialogues = dialogues.shuffle
     chosen = nil
     dialogues.each do |dial|
       if dial.is_possible?(@game_state)

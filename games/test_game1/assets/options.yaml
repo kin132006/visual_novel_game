@@ -46,3 +46,43 @@
   reqs: []
   effects: []
   next_dial: null
+
+- id: "opt_end_dialogue"
+  text: "(End the dialogue)"
+  reqs: []
+  effects: []
+  next_dial: null
+ 
+
+- id: "opt_any_complain"
+  text: "Complain about how exhausting today is."
+  reqs: []
+  effects: ["eff_val_annoyed"]
+  next_dial: null
+
+
+- id: "opt_any_ask_day"
+  text: "Ask him how his day is going so far."
+  reqs: []
+  effects: ["eff_val_happy"]
+  next_dial: null
+
+
+- id: "opt_any_give_coin"
+  text: "Hand over your Lucky Coin."
+  reqs: ["req_has_coin"]
+  effects: ["eff_remove_coin", "eff_val_happy"]
+  next_dial: "dial_val_any_coin_success"
+
+- id: "opt_any_keep_coin"
+  text: "Keep the coin to yourself and change the subject."
+  reqs: []
+  effects: []
+  next_dial: null
+
+# Opcje dla Dialogu 3 (Friendly Favor)
+- id: "opt_any_accept_candy"
+  text: "Accept the candy gratefully."
+  reqs: []
+  effects: ["eff_get_candy"]
+  next_dial: null
