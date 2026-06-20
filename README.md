@@ -16,7 +16,7 @@ Silnik został zaprojektowany z podziałem na warstwę danych (Model), zarządza
 
 ## Diagram Klas
 
-![Diagram Klas](diagram klas.png)
+![Diagram Klas](diagram_klas.png)
 
 ---
 
