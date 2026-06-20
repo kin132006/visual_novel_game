@@ -150,7 +150,7 @@ class AssetManager
     when "location"
       LocationRequirement.new(data['loc_id'])
     when "min_relation"
-      MinRelationRequirement.new(data["char_id"], data["val"])
+      MinRelationRequirement.new(data["char_id"], data["value"])
     when "flag"
       FlagRequirement.new(data["flag"])
     when "has_item"
