@@ -139,3 +139,7 @@ Zapisy tworzone są automatycznie wewnątrz podkatalogu gry: games/<tytuł_gry>/
 
 ## Mechanika Czasu
 Część interakcji (rozmowa, zmiana pokoju) zużywa czas (Round). Po osiągnięciu limitu rund (max_round = 10), dzień gry ulega zmianie, wywoływana jest metoda new_day, a pozycje postaci i przedmiotów w świecie gry są losowane na nowo.
+
+##  Autor 
+
+* **Kinga Błaszkiewicz** – *Główny twórca silnika* – [kin132006](https://github.com/kin132006)
