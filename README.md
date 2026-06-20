@@ -130,6 +130,10 @@ Dialogi muszą miec podane co najmniej jedna opcję. Jeśli dialog jest kończą
 Dla wszystkich przedmiotów name odpowiada id. Jeśli w requirements potrzebne jest np. item_id to powinno sie podać name istniejącego w items.yaml obiektu. Analogicznie dla rooms i characters.
    
 ## Uruchomienie Projektu
+W pliku main.rb wpisz tytuł swojej gry w tym miejscu
+
+title = "your_game_title"
+
 Wykonaj poniższe polecenie w katalogu głównym projektu, aby uruchomić grę:
 
 ruby visual_novel_game/main.rb

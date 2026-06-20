@@ -1,4 +1,6 @@
 require_relative 'engine/game.rb'
 
-gra = Game.new("test_game1")
+title = "test_game1"
+
+gra = Game.new("#{title}")
 gra.start
